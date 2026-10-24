@@ -3,16 +3,11 @@ import { Station, StallInfo, Vehicle, Reservation } from '../../types/ev';
 import { 
   X, 
   Zap, 
-  Calendar, 
   Clock, 
   CheckCircle2, 
-  ShieldCheck, 
   QrCode, 
   Car, 
-  CreditCard,
-  Sparkles,
-  ArrowRight,
-  Download
+  ArrowRight
 } from 'lucide-react';
 
 interface ReservationModalProps {
@@ -71,7 +66,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
       targetKwh,
       estimatedCost,
       pinCode: pin,
-      qrCodeData: `VOLT-${station.id}-${selectedStall.stallNumber}-${pin}`,
+      qrCodeData: `VP-${station.id}-${selectedStall.stallNumber}-${pin}`,
       createdAt: new Date().toISOString(),
     };
 
@@ -81,43 +76,43 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-label="Reserve EV charging stall"
     >
       <div 
-        className="relative w-full max-w-xl bg-[#090f1e] border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto"
+        className="relative w-full max-w-lg bg-[#0c1019] border border-slate-800 rounded-lg overflow-hidden shadow-2xl flex flex-col my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-              <Zap className="w-4 h-4 fill-current" />
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-slate-900">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center text-cyan-400">
+              <Zap className="w-3.5 h-3.5 fill-current" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">Reserve Charging Stall</h2>
-              <p className="text-xs text-slate-400">{station.name}</p>
+              <h2 className="text-sm font-bold text-white">Stall Reservation</h2>
+              <p className="text-[11px] text-slate-400 font-mono">{station.name}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             aria-label="Close reservation dialog"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            className="p-1 rounded text-slate-500 hover:text-white"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
         {!confirmedReservation ? (
-          <div className="p-6 space-y-5 overflow-y-auto max-h-[80vh]">
+          <div className="p-5 space-y-4 overflow-y-auto max-h-[80vh]">
             {/* Step 1: Select Vehicle */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Car className="w-4 h-4 text-cyan-400" />
-                1. Select EV Vehicle
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono text-slate-300 uppercase flex items-center gap-1.5">
+                <Car className="w-3.5 h-3.5 text-cyan-400" />
+                1. Vehicle
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {vehicles.map((v) => {
@@ -126,16 +121,16 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                     <button
                       key={v.id}
                       onClick={() => setSelectedVehicleId(v.id)}
-                      className={`p-3 rounded-xl border text-left transition-all ${
+                      className={`p-2.5 rounded-md border text-left transition-colors font-mono ${
                         isSelected
-                          ? 'bg-cyan-950/40 border-cyan-500/80 text-white shadow-md shadow-cyan-950'
-                          : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-800/80'
+                          ? 'bg-slate-800 border-cyan-500 text-white'
+                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
                       }`}
                     >
                       <div className="font-bold text-xs">{v.make} {v.model}</div>
-                      <div className="text-[11px] text-slate-400 mt-0.5 flex items-center justify-between font-mono">
+                      <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
                         <span>{v.batteryCapacityKwh} kWh</span>
-                        <span className="text-cyan-300">{v.defaultConnector}</span>
+                        <span className="text-cyan-400">{v.defaultConnector}</span>
                       </div>
                     </button>
                   );
@@ -144,12 +139,12 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
             </div>
 
             {/* Step 2: Stall & Connector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-cyan-400" />
-                2. Preferred Stall & Connector
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono text-slate-300 uppercase flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                2. Bay
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 font-mono">
                 {(station.stalls.length > 0 ? station.stalls : [
                   { id: 'st-def-1', stallNumber: '1A', connectorType: station.connectorTypes[0], maxKw: station.powerMaxKw, status: 'available' },
                   { id: 'st-def-2', stallNumber: '1B', connectorType: station.connectorTypes[0], maxKw: station.powerMaxKw, status: 'available' },
@@ -163,18 +158,18 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                       key={stall.id}
                       disabled={!isAvail}
                       onClick={() => setSelectedStallId(stall.id)}
-                      className={`p-2.5 rounded-xl border text-center transition-all ${
+                      className={`p-2 rounded-md border text-center transition-colors ${
                         isSelected
-                          ? 'bg-emerald-950/50 border-emerald-500 text-white shadow-md'
+                          ? 'bg-slate-800 border-emerald-500 text-white'
                           : isAvail
-                          ? 'bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                          : 'bg-slate-950/40 border-slate-800/40 text-slate-600 cursor-not-allowed'
+                          ? 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                          : 'bg-slate-950 border-slate-900 text-slate-600 cursor-not-allowed'
                       }`}
                     >
                       <div className="font-bold text-xs">{stall.stallNumber}</div>
-                      <div className="text-[10px] font-mono text-cyan-400 mt-0.5">{stall.connectorType}</div>
-                      <div className="text-[9px] text-slate-400 mt-1">
-                        {isAvail ? 'Available' : 'Busy'}
+                      <div className="text-[10px] text-cyan-400">{stall.connectorType}</div>
+                      <div className="text-[9px] text-slate-500 mt-0.5">
+                        {isAvail ? 'Open' : 'Busy'}
                       </div>
                     </button>
                   );
@@ -182,13 +177,13 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
               </div>
             </div>
 
-            {/* Step 3: Arrival Time Slot */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-cyan-400" />
-                3. Estimated Arrival Time Slot
+            {/* Step 3: Arrival Time */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono text-slate-300 uppercase flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                3. Arrival Window
               </label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-1.5 font-mono">
                 {[
                   { label: 'In 15m', mins: 15 },
                   { label: 'In 30m', mins: 30 },
@@ -198,10 +193,10 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                   <button
                     key={slot.mins}
                     onClick={() => setSlotDelayMinutes(slot.mins)}
-                    className={`py-2 rounded-xl text-xs font-semibold border transition-all ${
+                    className={`py-1.5 rounded-md text-xs font-mono border transition-colors ${
                       slotDelayMinutes === slot.mins
-                        ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/60 shadow-sm'
-                        : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'
+                        ? 'bg-slate-800 text-cyan-300 border-cyan-500'
+                        : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     {slot.label}
@@ -211,10 +206,10 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
             </div>
 
             {/* Target Energy to Charge */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                <span>Target Energy Amount</span>
-                <span className="text-emerald-400 font-mono font-bold">{targetKwh} kWh (~{Math.round(targetKwh * 3.6)} miles added)</span>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-mono text-slate-300">
+                <span>Energy Target</span>
+                <span className="text-emerald-400">{targetKwh} kWh</span>
               </div>
               <input
                 type="range"
@@ -223,116 +218,106 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                 step="5"
                 value={targetKwh}
                 onChange={(e) => setTargetKwh(Number(e.target.value))}
-                className="w-full accent-emerald-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                className="w-full accent-emerald-400 h-1 bg-slate-800 rounded cursor-pointer"
               />
             </div>
 
             {/* Cost Summary Breakdown */}
-            <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs">
+            <div className="p-3 rounded-md bg-slate-950 border border-slate-800 space-y-1.5 text-xs font-mono">
               <div className="flex justify-between text-slate-400">
-                <span>Charging Rate ({station.network})</span>
-                <span className="text-slate-200 font-mono">${station.pricePerKwh.toFixed(2)} / kWh</span>
+                <span>Tariff Rate</span>
+                <span className="text-slate-200">${station.pricePerKwh.toFixed(2)}/kWh</span>
               </div>
               <div className="flex justify-between text-slate-400">
-                <span>Hold Reservation Fee</span>
-                <span className="text-emerald-400 font-bold">$0.00 (Free Early Access)</span>
+                <span>Stall Hold Fee</span>
+                <span className="text-emerald-400">$0.00</span>
               </div>
-              <div className="flex justify-between text-slate-400">
-                <span>Idle Grace Period</span>
-                <span className="text-slate-200 font-mono">10 minutes after full</span>
-              </div>
-              <div className="pt-2 border-t border-slate-800 flex justify-between items-center text-sm font-bold">
-                <span className="text-white">Estimated Session Total</span>
-                <span className="text-emerald-400 font-mono text-base">${estimatedCost.toFixed(2)}</span>
+              <div className="pt-1.5 border-t border-slate-800 flex justify-between items-center text-sm font-bold">
+                <span className="text-white">Estimated Total</span>
+                <span className="text-emerald-400 font-mono">${estimatedCost.toFixed(2)}</span>
               </div>
             </div>
 
-            {/* Submit Action */}
+            {/* Submit Action - Zero pill button */}
             <button
               onClick={handleBook}
-              className="w-full py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm transition-all shadow-lg shadow-emerald-500/25 active:scale-95 flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
             >
-              <CheckCircle2 className="w-5 h-5" />
-              <span>Confirm & Lock In Stall {selectedStall.stallNumber}</span>
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Confirm Reservation ({selectedStall.stallNumber})</span>
             </button>
           </div>
         ) : (
-          /* Confirmation & Digital Pass Screen */
-          <div className="p-6 space-y-6 text-center animate-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/20">
-              <CheckCircle2 className="w-8 h-8" />
+          /* Confirmation & Pass Screen */
+          <div className="p-5 space-y-4 text-center">
+            <div className="w-10 h-10 rounded-md bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-5 h-5" />
             </div>
 
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">Reservation Confirmed</span>
-              <h3 className="text-xl font-black text-white mt-1">Stall {confirmedReservation.stallNumber} Locked For You</h3>
-              <p className="text-xs text-slate-400 mt-1">{confirmedReservation.stationName}</p>
+              <span className="text-xs font-mono uppercase text-emerald-400">Stall Confirmed</span>
+              <h3 className="text-base font-bold text-white mt-0.5">Bay {confirmedReservation.stallNumber} Assigned</h3>
+              <p className="text-xs text-slate-400 font-mono">{confirmedReservation.stationName}</p>
             </div>
 
-            {/* Simulated Digital Pass Card */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-cyan-950/60 border border-cyan-500/40 text-left relative shadow-2xl overflow-hidden">
-              <div className="absolute top-0 right-0 p-3 opacity-10">
-                <Zap className="w-32 h-32 text-cyan-300" />
+            {/* Digital Pass Card */}
+            <div className="p-4 rounded-md bg-slate-950 border border-slate-800 text-left font-mono">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-3 text-xs">
+                <span className="text-slate-400">SESSION TOKEN</span>
+                <span className="text-cyan-400">{confirmedReservation.id}</span>
               </div>
 
-              <div className="flex items-center justify-between pb-3 border-b border-cyan-500/20 mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">VoltPulse Priority Pass</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  {confirmedReservation.id}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 text-xs mb-4">
+              <div className="grid grid-cols-2 gap-2 text-xs mb-3">
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase">Assigned Stall</span>
-                  <div className="text-base font-bold text-white font-mono">{confirmedReservation.stallNumber} ({confirmedReservation.connectorType})</div>
+                  <span className="text-[10px] text-slate-500 uppercase block">Stall</span>
+                  <div className="font-bold text-white">{confirmedReservation.stallNumber} ({confirmedReservation.connectorType})</div>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase">Max Power</span>
-                  <div className="text-base font-bold text-emerald-400 font-mono">{confirmedReservation.powerKw} kW</div>
+                  <span className="text-[10px] text-slate-500 uppercase block">Output</span>
+                  <div className="font-bold text-emerald-400">{confirmedReservation.powerKw} kW</div>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase">Start Window</span>
-                  <div className="text-xs font-semibold text-slate-200 font-mono">
+                  <span className="text-[10px] text-slate-500 uppercase block">Arrival</span>
+                  <div className="text-slate-200">
                     {new Date(confirmedReservation.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase">Stall Unlock PIN</span>
-                  <div className="text-base font-black text-cyan-400 font-mono tracking-widest">{confirmedReservation.pinCode}</div>
+                  <span className="text-[10px] text-slate-500 uppercase block">Dispenser PIN</span>
+                  <div className="text-sm font-bold text-cyan-400 tracking-wider">{confirmedReservation.pinCode}</div>
                 </div>
               </div>
 
-              {/* QR Code Simulation */}
-              <div className="p-3 bg-white rounded-xl flex items-center justify-between text-slate-900">
-                <div className="flex items-center gap-3">
-                  <QrCode className="w-12 h-12 text-slate-900 shrink-0" />
-                  <div className="text-left">
-                    <div className="text-[11px] font-bold">Scan at Charger Post</div>
-                    <div className="text-[9px] font-mono text-slate-600">{confirmedReservation.qrCodeData}</div>
+              {/* QR Code Bar */}
+              <div className="p-2.5 bg-slate-900 rounded border border-slate-800 flex items-center justify-between text-slate-300">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-8 h-8 text-cyan-400 shrink-0" />
+                  <div className="text-left font-mono text-[10px]">
+                    <div className="text-slate-200 font-bold">OCPP Handshake Pass</div>
+                    <div className="text-slate-500">{confirmedReservation.qrCodeData}</div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-800 rounded">Active</span>
-                </div>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 bg-emerald-950 text-emerald-400 rounded border border-emerald-900">
+                  Ready
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={onClose}
-                className="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition-colors border border-slate-700"
+                className="flex-1 py-2 px-3 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-colors border border-slate-700"
               >
-                Close & View on Map
+                Back to Map
               </button>
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5"
+                className="flex-1 py-2 px-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-1"
               >
-                <span>Navigate to Stall</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Navigate</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>

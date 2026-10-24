@@ -96,10 +96,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     >
       {/* Map Controls Floating Header */}
       <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 flex-wrap max-w-[55%]">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 backdrop-blur-md shadow-lg shadow-black/40">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-          <span className="text-[11px] font-semibold text-slate-200 tracking-wide uppercase">Live Grid</span>
-          <span className="text-[11px] px-1.5 py-0.2 rounded-md bg-emerald-950 text-emerald-400 font-mono font-medium border border-emerald-800/50">
+        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-slate-900/90 border border-slate-800 backdrop-blur-md">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span className="text-[11px] font-mono text-slate-300 uppercase">Grid</span>
+          <span className="text-[10px] px-1 py-0.5 rounded bg-slate-800 text-emerald-400 font-mono">
             {stations.filter(s => s.stallsAvailable > 0).length} Open
           </span>
         </div>
@@ -107,7 +107,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <button
           onClick={triggerRadarScan}
           aria-label="Radar scan nearby chargers"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-[11px] font-medium text-cyan-400 backdrop-blur-md transition-all shadow-md active:scale-95"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] font-mono text-cyan-400 transition-colors"
         >
           <Radio className={`w-3 h-3 ${radarScanning ? 'animate-spin text-cyan-300' : ''}`} />
           <span>{radarScanning ? 'Scanning...' : 'Radar'}</span>
@@ -116,10 +116,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <button
           onClick={() => setShowRangeBubble(!showRangeBubble)}
           aria-label="Toggle battery range radius ring"
-          className={`hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-[11px] font-medium backdrop-blur-md transition-all shadow-md active:scale-95 ${
+          className={`hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-md border text-[11px] font-mono transition-colors ${
             showRangeBubble 
-              ? 'bg-cyan-950/80 border-cyan-700/60 text-cyan-300' 
-              : 'bg-slate-900/90 border-slate-700/80 text-slate-400 hover:text-slate-200'
+              ? 'bg-slate-800 border-cyan-500/60 text-cyan-300' 
+              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
           }`}
         >
           <Zap className="w-3 h-3" />
@@ -130,27 +130,27 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       {/* Map Zoom & Style Controls */}
       <div className="absolute top-3 right-3 z-20 flex flex-col items-end gap-1.5">
         {/* Style Selector */}
-        <div className="flex items-center p-0.5 rounded-xl bg-slate-900/90 border border-slate-700/80 backdrop-blur-md shadow-lg">
+        <div className="flex items-center p-0.5 rounded-md bg-slate-900/90 border border-slate-800">
           <button
             onClick={() => setMapTheme('neon')}
-            className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
-              mapTheme === 'neon' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2 py-1 text-[10px] font-mono rounded transition-colors ${
+              mapTheme === 'neon' ? 'bg-slate-800 text-cyan-300 border border-slate-700' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            Cyber
+            Dark
           </button>
           <button
             onClick={() => setMapTheme('satellite')}
-            className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
-              mapTheme === 'satellite' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2 py-1 text-[10px] font-mono rounded transition-colors ${
+              mapTheme === 'satellite' ? 'bg-slate-800 text-emerald-300 border border-slate-700' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Satellite
           </button>
           <button
             onClick={() => setMapTheme('slate')}
-            className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
-              mapTheme === 'slate' ? 'bg-slate-700 text-slate-100' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2 py-1 text-[10px] font-mono rounded transition-colors ${
+              mapTheme === 'slate' ? 'bg-slate-800 text-slate-100' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Slate
@@ -158,30 +158,32 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </div>
 
         {/* Zoom In/Out/Reset */}
-        <div className="flex flex-col gap-1 p-1 rounded-xl bg-slate-900/90 border border-slate-700/80 backdrop-blur-md shadow-lg">
+        <div className="flex flex-col gap-0.5 p-0.5 rounded-md bg-slate-900/90 border border-slate-800">
           <button
             onClick={() => setZoom(z => Math.min(z + 0.3, 3))}
             aria-label="Zoom in"
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded text-slate-400 hover:text-white hover:bg-slate-800"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setZoom(z => Math.max(z - 0.3, 0.7))}
             aria-label="Zoom out"
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded text-slate-400 hover:text-white hover:bg-slate-800"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }}
             aria-label="Reset map view"
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="w-7 h-7 flex items-center justify-center rounded text-slate-400 hover:text-white hover:bg-slate-800"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3 h-3" />
           </button>
         </div>
       </div>
+
+
 
       {/* SVG Canvas Map Surface */}
       <svg
@@ -462,72 +464,71 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
       {/* Floating Selected Station Quick Card Overlay */}
       {selectedStation && (
-        <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-md z-30 p-4 rounded-2xl bg-slate-900/95 border border-slate-700/80 backdrop-blur-xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md z-30 p-3.5 rounded-lg bg-slate-900 border border-slate-700 shadow-xl">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
                   {selectedStation.network}
                 </span>
                 {selectedStation.isRenewable && (
-                  <span className="text-[11px] font-semibold text-emerald-300 flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-emerald-400" />
-                    100% Green
+                  <span className="text-[10px] font-mono text-emerald-400">
+                    Clean Grid
                   </span>
                 )}
               </div>
-              <h3 className="font-bold text-slate-100 text-base leading-snug">{selectedStation.name}</h3>
-              <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+              <h3 className="font-semibold text-slate-100 text-sm leading-snug">{selectedStation.name}</h3>
+              <p className="text-[11px] font-mono text-slate-400 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3 text-slate-500" />
-                {selectedStation.address}, {selectedStation.city} • <span className="font-semibold text-slate-300">{selectedStation.distanceMiles} mi away</span>
+                {selectedStation.address}, {selectedStation.city} • <span className="text-slate-300">{selectedStation.distanceMiles} mi</span>
               </p>
             </div>
 
             <div className="text-right shrink-0">
-              <div className="text-sm font-bold text-slate-100">${selectedStation.pricePerKwh.toFixed(2)}<span className="text-[10px] text-slate-400">/kWh</span></div>
-              <div className="text-[11px] text-cyan-400 font-mono mt-0.5 font-semibold">⚡ up to {selectedStation.powerMaxKw} kW</div>
+              <div className="text-xs font-bold font-mono text-slate-100">${selectedStation.pricePerKwh.toFixed(2)}/kWh</div>
+              <div className="text-[11px] text-cyan-400 font-mono mt-0.5 font-medium">{selectedStation.powerMaxKw} kW</div>
             </div>
           </div>
 
           {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-3 gap-2 mt-3 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800">
+          <div className="grid grid-cols-3 gap-2 mt-2.5 p-2 rounded bg-slate-950 border border-slate-800 font-mono text-center">
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-medium">Stalls</div>
-              <div className="text-xs font-bold text-emerald-400 font-mono">
-                {selectedStation.stallsAvailable} / {selectedStation.stallsTotal} Free
+              <div className="text-[10px] text-slate-500 uppercase">Stalls</div>
+              <div className="text-xs font-bold text-emerald-400">
+                {selectedStation.stallsAvailable}/{selectedStation.stallsTotal} Open
               </div>
             </div>
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-medium">Wait Time</div>
-              <div className="text-xs font-bold text-slate-200 font-mono">
-                {selectedStation.averageWaitMins === 0 ? 'No Wait' : `~${selectedStation.averageWaitMins} mins`}
+              <div className="text-[10px] text-slate-500 uppercase">Queue</div>
+              <div className="text-xs font-semibold text-slate-300">
+                {selectedStation.averageWaitMins === 0 ? 'Zero' : `~${selectedStation.averageWaitMins}m`}
               </div>
             </div>
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-medium">Real Speed</div>
-              <div className="text-xs font-bold text-cyan-400 font-mono">
-                {selectedStation.actualVsAdvertisedSpeedPercent}% avg
+              <div className="text-[10px] text-slate-500 uppercase">Output</div>
+              <div className="text-xs font-bold text-cyan-400">
+                {selectedStation.actualVsAdvertisedSpeedPercent}%
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-800/80">
+          <div className="flex items-center gap-2 mt-2.5 pt-2 border-t border-slate-800">
             <button
               onClick={() => onSelectStation(selectedStation)}
-              className="flex-1 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-md active:scale-95 text-center flex items-center justify-center gap-1.5"
+              className="flex-1 py-1.5 px-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-colors text-center flex items-center justify-center gap-1"
             >
-              <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>Inspect & Reserve Stall</span>
+              <Zap className="w-3 h-3 fill-current" />
+              <span>Reserve Stall</span>
             </button>
             <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${selectedStation.lat},${selectedStation.lng}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
+              className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
               title="Open Directions in GPS"
               aria-label="Open directions to station in Google Maps"
             >
-              <Navigation className="w-4 h-4 text-cyan-400" />
+              <Navigation className="w-3.5 h-3.5 text-cyan-400" />
             </a>
           </div>
         </div>

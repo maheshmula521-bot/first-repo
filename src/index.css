@@ -3,6 +3,8 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0b0f17;
+    color: #e2e8f0;
   }
   
   code, pre, .font-mono {
@@ -10,31 +12,20 @@
   }
 }
 
-/* Custom scrollbars */
+/* Minimal engineering scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: #0d111a;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.8);
-  border-radius: 9999px;
+  background: #252e3d;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.6);
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
+  background: #38bdf8;
 }
 
 @keyframes radarSweep {
@@ -47,13 +38,5 @@
 }
 
 .animate-radar {
-  animation: radarSweep 4s linear infinite;
-}
-
-.glow-emerald {
-  box-shadow: 0 0 20px -2px rgba(16, 185, 129, 0.35);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 20px -2px rgba(6, 182, 212, 0.35);
+  animation: radarSweep 6s linear infinite;
 }
