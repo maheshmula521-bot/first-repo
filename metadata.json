@@ -1,0 +1,6 @@
+{
+  "name": "VoltPulse EV",
+  "description": "Real-time EV charging station locator, live stall availability, smart trip route optimizer, stall reservations, and EV driver community.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
